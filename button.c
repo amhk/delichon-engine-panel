@@ -3,8 +3,6 @@
 
 #include "common.h"
 
-#define GPIO_MAX 28
-
 struct button_info {
   button_cb_t callback;
   absolute_time_t timestamp;

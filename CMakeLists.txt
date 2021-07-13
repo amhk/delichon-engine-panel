@@ -32,6 +32,7 @@ pico_sdk_init()
 
 add_executable(delichon
     button.c
+    led.c
     main.c
 )
 
@@ -45,6 +46,7 @@ target_compile_options(
 
 target_link_libraries(
     delichon
+    hardware_pwm
     pico_stdlib
 )
 
