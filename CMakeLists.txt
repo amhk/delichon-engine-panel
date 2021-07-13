@@ -31,6 +31,7 @@ set(CMAKE_C_STANDARD 11)
 pico_sdk_init()
 
 add_executable(delichon
+    button.c
     main.c
 )
 
