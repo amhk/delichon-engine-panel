@@ -3,10 +3,28 @@
 
 #include "pico/types.h"
 
+// -------- generic --------
+
 /*
  * Number of GPIO pins on the Raspberry Pi Pico.
  */
 #define GPIO_MAX 28
+
+#define GPIO_LED_ON_OFF 12
+#define GPIO_LED_GLOW 13
+#define GPIO_LED_START 14
+#define GPIO_LED_STOP 15
+
+#define GPIO_SWITCH_GLOW 17
+#define GPIO_SWITCH_START 16
+#define GPIO_SWITCH_STOP 18
+
+#define LED_VALUE_BRIGHT 100
+#define LED_VALUE_DIM 40
+#define LED_VALUE_OFF 0
+
+#define DURATION_SUBSTATE_START_ENABLED_BRIGHT_MS 1000
+#define DURATION_SUBSTATE_START_ENABLED_DIM_MS 4000
 
 // -------- hardware buttons --------
 
