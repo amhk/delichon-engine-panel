@@ -40,35 +40,35 @@ static void goto_state_idle() {
   printf("goto_state_idle\n");
   switch (substate) {
   case SUBSTATE_START_ENABLED_BRIGHT:
-    led_jump_to(GPIO_LED_ON_OFF, LED_VALUE_BRIGHT);
-    led_jump_to(GPIO_LED_GLOW, LED_VALUE_BRIGHT);
-    led_jump_to(GPIO_LED_START, LED_VALUE_BRIGHT);
-    led_jump_to(GPIO_LED_STOP, LED_VALUE_BRIGHT);
+    led_jump_to(GPIO_LED_ON_OFF, LED_BRIGHT);
+    led_jump_to(GPIO_LED_GLOW, LED_BRIGHT);
+    led_jump_to(GPIO_LED_START, LED_BRIGHT);
+    led_jump_to(GPIO_LED_STOP, LED_BRIGHT);
     break;
   case SUBSTATE_START_ENABLED_DIM:
     if (state == STATE_IDLE) {
-      led_animate_to(GPIO_LED_ON_OFF, LED_VALUE_DIM);
-      led_animate_to(GPIO_LED_GLOW, LED_VALUE_DIM);
-      led_animate_to(GPIO_LED_START, LED_VALUE_DIM);
-      led_animate_to(GPIO_LED_STOP, LED_VALUE_DIM);
+      led_animate_to(GPIO_LED_ON_OFF, LED_DIM);
+      led_animate_to(GPIO_LED_GLOW, LED_DIM);
+      led_animate_to(GPIO_LED_START, LED_DIM);
+      led_animate_to(GPIO_LED_STOP, LED_DIM);
     } else {
-      led_jump_to(GPIO_LED_ON_OFF, LED_VALUE_DIM);
-      led_jump_to(GPIO_LED_GLOW, LED_VALUE_DIM);
-      led_jump_to(GPIO_LED_START, LED_VALUE_DIM);
-      led_jump_to(GPIO_LED_STOP, LED_VALUE_DIM);
+      led_jump_to(GPIO_LED_ON_OFF, LED_DIM);
+      led_jump_to(GPIO_LED_GLOW, LED_DIM);
+      led_jump_to(GPIO_LED_START, LED_DIM);
+      led_jump_to(GPIO_LED_STOP, LED_DIM);
     }
     break;
   case SUBSTATE_START_DISABLED:
     if (state == STATE_IDLE) {
-      led_animate_to(GPIO_LED_ON_OFF, LED_VALUE_DIM);
-      led_animate_to(GPIO_LED_GLOW, LED_VALUE_OFF);
-      led_animate_to(GPIO_LED_START, LED_VALUE_OFF);
-      led_animate_to(GPIO_LED_STOP, LED_VALUE_DIM);
+      led_animate_to(GPIO_LED_ON_OFF, LED_DIM);
+      led_animate_to(GPIO_LED_GLOW, LED_OFF);
+      led_animate_to(GPIO_LED_START, LED_OFF);
+      led_animate_to(GPIO_LED_STOP, LED_DIM);
     } else {
-      led_jump_to(GPIO_LED_ON_OFF, LED_VALUE_DIM);
-      led_jump_to(GPIO_LED_GLOW, LED_VALUE_OFF);
-      led_jump_to(GPIO_LED_START, LED_VALUE_OFF);
-      led_jump_to(GPIO_LED_STOP, LED_VALUE_DIM);
+      led_jump_to(GPIO_LED_ON_OFF, LED_DIM);
+      led_jump_to(GPIO_LED_GLOW, LED_OFF);
+      led_jump_to(GPIO_LED_START, LED_OFF);
+      led_jump_to(GPIO_LED_STOP, LED_DIM);
     }
     break;
   }
@@ -78,31 +78,30 @@ static void goto_state_idle() {
 
 static void goto_state_start() {
   printf("goto_state_start\n");
-  led_jump_to(GPIO_LED_ON_OFF, LED_VALUE_OFF);
-  led_jump_to(GPIO_LED_GLOW, LED_VALUE_OFF);
-  led_jump_to(GPIO_LED_START, LED_VALUE_BRIGHT);
-  led_jump_to(GPIO_LED_STOP, LED_VALUE_OFF);
+  led_jump_to(GPIO_LED_ON_OFF, LED_OFF);
+  led_jump_to(GPIO_LED_GLOW, LED_OFF);
+  led_jump_to(GPIO_LED_START, LED_BRIGHT);
+  led_jump_to(GPIO_LED_STOP, LED_OFF);
   relays_set(!false, true, true, false);
   state = STATE_START;
 }
 
 static void goto_state_glow() {
   printf("goto_state_glow\n");
-  led_jump_to(GPIO_LED_ON_OFF, LED_VALUE_OFF);
-  led_jump_to(GPIO_LED_GLOW, LED_VALUE_BRIGHT);
-  led_jump_to(GPIO_LED_START, LED_VALUE_OFF);
-  led_jump_to(GPIO_LED_STOP, LED_VALUE_OFF);
+  led_jump_to(GPIO_LED_ON_OFF, LED_OFF);
+  led_jump_to(GPIO_LED_GLOW, LED_BRIGHT);
+  led_jump_to(GPIO_LED_START, LED_OFF);
+  led_jump_to(GPIO_LED_STOP, LED_OFF);
   relays_set(!false, true, false, false);
   state = STATE_GLOW;
 }
 
 static void goto_state_stop() {
   printf("goto_state_stop\n");
-  led_jump_to(GPIO_LED_ON_OFF,
-              substate == SUBSTATE_START_ENABLED_BRIGHT ? LED_VALUE_BRIGHT : LED_VALUE_DIM);
-  led_jump_to(GPIO_LED_GLOW, LED_VALUE_OFF);
-  led_jump_to(GPIO_LED_START, LED_VALUE_OFF);
-  led_jump_to(GPIO_LED_STOP, LED_VALUE_BRIGHT);
+  led_jump_to(GPIO_LED_ON_OFF, substate == SUBSTATE_START_ENABLED_BRIGHT ? LED_BRIGHT : LED_DIM);
+  led_jump_to(GPIO_LED_GLOW, LED_OFF);
+  led_jump_to(GPIO_LED_START, LED_OFF);
+  led_jump_to(GPIO_LED_STOP, LED_BRIGHT);
   relays_set(!true, false, false, true);
   state = STATE_STOP;
 }
