@@ -34,6 +34,7 @@ add_executable(delichon
     button.c
     led.c
     main.c
+    relay.c
 )
 
 target_compile_options(

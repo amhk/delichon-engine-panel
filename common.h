@@ -19,6 +19,42 @@
 #define GPIO_SWITCH_START 16
 #define GPIO_SWITCH_STOP 18
 
+/*
+ * Relay to control the warnings panel (oil pressure, water in sail drive,
+ * coolant high temperature, low battert).
+ *
+ * Corresponds to Yanmar's AC terminal.
+ *
+ * NOTE: because the panel is enabled when in STATE_IDLE, it is wired between
+ * the relays Common and Normally-Closed connections (all other relays use
+ * Command and Normally-Open). This means that all calls to relay_set should
+ * have its bool parameter inverted.
+ */
+#define GPIO_RELAY_PANEL 19
+
+/*
+ * Relay to control the glow plug.
+ *
+ * Corresponds to Yanmar's G1 and G2 terminals (which are joined together
+ * closer to the glow plug).
+ */
+#define GPIO_RELAY_GLOW 20
+
+/*
+ * Relay to control the starter motor.
+ *
+ * Corresponds to Yanmar's 17 terminal.
+ */
+#define GPIO_RELAY_START 21
+
+/*
+ * Relay to stop the engine.
+ *
+ * Corresponds to Yanmar's stop push button, connecting +12V to the Brown-White
+ * cable.
+ */
+#define GPIO_RELAY_STOP 22
+
 #define LED_VALUE_BRIGHT 100
 #define LED_VALUE_DIM 40
 #define LED_VALUE_OFF 0
@@ -83,5 +119,26 @@ void led_jump_to(uint gpio, uint8_t percent);
  * `percent` should be between 0 and 100, inclusive.
  */
 void led_animate_to(uint gpio, uint8_t percent);
+
+// -------- hardware relays --------
+
+/*
+ * Initialize a GPIO pin for control of a relay.
+ *
+ * `gpio` is the logical GPIO pin, e.g. 16 for physical pin 21.
+ */
+void relay_register(uint gpio);
+
+/*
+ * De-initialize a previously initialized GPIO pin.
+ */
+void relay_unregister(uint gpio);
+
+/*
+ * Engage or disengage a relay.
+ *
+ * `engage`: true to connect C and NO, false to connect C and NC
+ */
+void relay_set(uint gpio, bool engage);
 
 #endif

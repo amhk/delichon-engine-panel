@@ -18,6 +18,24 @@ static enum substate {
   SUBSTATE_START_DISABLED,
 } substate = SUBSTATE_START_ENABLED_BRIGHT;
 
+/*
+ * Control all four relays in a single call.
+ *
+ * Expected state vs relay configuration.
+ *
+ *               PANEL GLOW START STOP
+ * STATE_IDLE  :    !1    0     0    0
+ * STATE_GLOW  :    !0    1     0    0
+ * STATE_START :    !0    1     1    0
+ * STATE_STOP  :    !1    0     0    1
+ */
+static void relays_set(bool panel, bool glow, bool start, bool stop) {
+  relay_set(GPIO_RELAY_PANEL, panel);
+  relay_set(GPIO_RELAY_GLOW, glow);
+  relay_set(GPIO_RELAY_START, start);
+  relay_set(GPIO_RELAY_STOP, stop);
+}
+
 static void goto_state_idle() {
   printf("goto_state_idle\n");
   switch (substate) {
@@ -54,6 +72,7 @@ static void goto_state_idle() {
     }
     break;
   }
+  relays_set(!true, false, false, false);
   state = STATE_IDLE;
 }
 
@@ -63,6 +82,7 @@ static void goto_state_start() {
   led_jump_to(GPIO_LED_GLOW, LED_VALUE_OFF);
   led_jump_to(GPIO_LED_START, LED_VALUE_BRIGHT);
   led_jump_to(GPIO_LED_STOP, LED_VALUE_OFF);
+  relays_set(!false, true, true, false);
   state = STATE_START;
 }
 
@@ -72,6 +92,7 @@ static void goto_state_glow() {
   led_jump_to(GPIO_LED_GLOW, LED_VALUE_BRIGHT);
   led_jump_to(GPIO_LED_START, LED_VALUE_OFF);
   led_jump_to(GPIO_LED_STOP, LED_VALUE_OFF);
+  relays_set(!false, true, false, false);
   state = STATE_GLOW;
 }
 
@@ -82,6 +103,7 @@ static void goto_state_stop() {
   led_jump_to(GPIO_LED_GLOW, LED_VALUE_OFF);
   led_jump_to(GPIO_LED_START, LED_VALUE_OFF);
   led_jump_to(GPIO_LED_STOP, LED_VALUE_BRIGHT);
+  relays_set(!true, false, false, true);
   state = STATE_STOP;
 }
 
@@ -129,6 +151,11 @@ int main() {
   led_register(GPIO_LED_GLOW);
   led_register(GPIO_LED_START);
   led_register(GPIO_LED_STOP);
+
+  relay_register(GPIO_RELAY_PANEL);
+  relay_register(GPIO_RELAY_GLOW);
+  relay_register(GPIO_RELAY_START);
+  relay_register(GPIO_RELAY_STOP);
 
   add_alarm_in_ms(DURATION_SUBSTATE_START_ENABLED_BRIGHT_MS, on_alarm,
                   (void*)SUBSTATE_START_ENABLED_DIM, true);
