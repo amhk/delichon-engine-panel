@@ -12,14 +12,14 @@
  */
 #define GPIO_MAX 29
 
-#define GPIO_LED_ON_OFF 12
-#define GPIO_LED_GLOW 13
-#define GPIO_LED_START 14
-#define GPIO_LED_STOP 15
+#define GPIO_LED_ON_OFF 28
+#define GPIO_LED_GLOW 27
+#define GPIO_LED_START 26
+#define GPIO_LED_STOP 22
 
-#define GPIO_SWITCH_GLOW 17
-#define GPIO_SWITCH_START 16
-#define GPIO_SWITCH_STOP 18
+#define GPIO_SWITCH_GLOW 15
+#define GPIO_SWITCH_START 14
+#define GPIO_SWITCH_STOP 13
 
 /*
  * Relay to control the warnings panel (oil pressure, water in sail drive,
@@ -32,7 +32,7 @@
  * Command and Normally-Open). This means that all calls to relay_set should
  * have its bool parameter inverted.
  */
-#define GPIO_RELAY_PANEL 19
+#define GPIO_RELAY_PANEL 21
 
 /*
  * Relay to control the glow plug.
@@ -47,7 +47,7 @@
  *
  * Corresponds to Yanmar's 17 terminal.
  */
-#define GPIO_RELAY_START 21
+#define GPIO_RELAY_START 19
 
 /*
  * Relay to stop the engine.
@@ -55,7 +55,7 @@
  * Corresponds to Yanmar's stop push button, connecting +12V to the Brown-White
  * cable.
  */
-#define GPIO_RELAY_STOP 22
+#define GPIO_RELAY_STOP 18
 
 #define LED_BRIGHT 100
 #define LED_DIM 40
