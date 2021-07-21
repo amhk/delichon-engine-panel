@@ -7,8 +7,10 @@
 
 /*
  * Number of GPIO pins on the Raspberry Pi Pico.
+ *
+ * 29 pins, numbered 0 to 28
  */
-#define GPIO_MAX 28
+#define GPIO_MAX 29
 
 #define GPIO_LED_ON_OFF 12
 #define GPIO_LED_GLOW 13
