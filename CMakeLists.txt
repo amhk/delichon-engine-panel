@@ -51,6 +51,8 @@ target_link_libraries(
     pico_stdlib
 )
 
+pico_add_extra_outputs(delichon)
+
 # ---- flash target ----
 add_custom_target(flash
     COMMAND $ENV{OPENOCD_BIN_PATH}
