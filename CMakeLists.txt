@@ -1,28 +1,26 @@
 cmake_minimum_required(VERSION 3.13)
 
 # ---- Raspberry Pi Pico SDK ----
-if (NOT DEFINED ENV{PICO_SDK_PATH})
-    message(FATAL_ERROR "PICO_SDK_PATH: not set")
-endif ()
-if (NOT EXISTS $ENV{PICO_SDK_PATH}/pico_sdk_init.cmake)
-    message(FATAL_ERROR "PICO_SDK_PATH: bad path $ENV{PICO_SDK_PATH}")
-endif ()
-include($ENV{PICO_SDK_PATH}/pico_sdk_init.cmake)
+include(pico_sdk_import.cmake)
 
 # ---- OpenOCD binary ----
-if (NOT DEFINED ENV{OPENOCD_BIN_PATH})
-    message(FATAL_ERROR "OPENOCD_BIN_PATH: not set")
+set(OPENOCD_BIN_PATH $ENV{OPENOCD_BIN_PATH})
+if (NOT OPENOCD_BIN_PATH)
+    message("Defaulting OPENOCD_BIN_PATH to /usr/bin/openocd")
+    set(OPENOCD_BIN_PATH /usr/bin/openocd)
 endif ()
-if (NOT EXISTS $ENV{OPENOCD_BIN_PATH})
-    message(FATAL_ERROR "OPENOCD_BIN_PATH: bad path $ENV{OPENOCD_BIN_PATH}")
+if (NOT EXISTS ${OPENOCD_BIN_PATH})
+    message(FATAL_ERROR "OPENOCD_BIN_PATH: bad path ${OPENOCD_BIN_PATH}")
 endif ()
 
 # ---- OpenOCD scripts ----
-if (NOT DEFINED ENV{OPENOCD_SCRIPTS_PATH})
-    message(FATAL_ERROR "OPENOCD_SCRIPTS_PATH: not set")
+set(OPENOCD_SCRIPTS_PATH $ENV{OPENOCD_SCRIPTS_PATH})
+if (NOT OPENOCD_SCRIPTS_PATH)
+    message("Defaulting OPENOCD_SCRIPTS_PATH to /usr/share/openocd/scripts")
+    set(OPENOCD_SCRIPTS_PATH /usr/share/openocd/scripts)
 endif ()
-if (NOT EXISTS $ENV{OPENOCD_SCRIPTS_PATH}/.)
-    message(FATAL_ERROR "OPENOCD_SCRIPTS_PATH: bad path $ENV{OPENOCD_SCRIPTS_PATH}")
+if (NOT EXISTS ${OPENOCD_SCRIPTS_PATH}/.)
+    message(FATAL_ERROR "OPENOCD_SCRIPTS_PATH: bad path ${OPENOCD_SCRIPTS_PATH}")
 endif ()
 
 # ---- the main project ----
@@ -55,10 +53,10 @@ pico_add_extra_outputs(delichon)
 
 # ---- flash target ----
 add_custom_target(flash
-    COMMAND $ENV{OPENOCD_BIN_PATH}
-    -f $ENV{OPENOCD_SCRIPTS_PATH}/interface/picoprobe.cfg
-    -f $ENV{OPENOCD_SCRIPTS_PATH}/target/rp2040.cfg
-    -s $ENV{OPENOCD_SCRIPTS_PATH}
+    COMMAND ${OPENOCD_BIN_PATH}
+    -f ${OPENOCD_SCRIPTS_PATH}/interface/picoprobe.cfg
+    -f ${OPENOCD_SCRIPTS_PATH}/target/rp2040.cfg
+    -s ${OPENOCD_SCRIPTS_PATH}
     -c "program ${CMAKE_CURRENT_BINARY_DIR}/delichon.elf verify reset exit"
     DEPENDS delichon
 )
@@ -68,10 +66,10 @@ add_custom_target(console COMMAND screen /dev/ttyACM0 115200)
 
 # ---- gdb server target ----
 add_custom_target(gdb-server
-    COMMAND $ENV{OPENOCD_BIN_PATH}
-    -f $ENV{OPENOCD_SCRIPTS_PATH}/interface/picoprobe.cfg
-    -f $ENV{OPENOCD_SCRIPTS_PATH}/target/rp2040.cfg
-    -s $ENV{OPENOCD_SCRIPTS_PATH}
+    COMMAND ${OPENOCD_BIN_PATH}
+    -f ${OPENOCD_SCRIPTS_PATH}/interface/picoprobe.cfg
+    -f ${OPENOCD_SCRIPTS_PATH}/target/rp2040.cfg
+    -s ${OPENOCD_SCRIPTS_PATH}
 )
 
 # ---- gdb client target ----
